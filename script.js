@@ -7,66 +7,114 @@ function getComputerChoice() {
 
     switch(randomNumber) {
         case 1:
-            return "Rock";
+            return "ROCK";
             break;
         case 2:
-            return "Paper";
+            return "PAPER";
             break;
         case 3:
-            return "Scissors";
+            return "SCISSORS";
             break;
         default:
             break;
     }
 }
 
-function playRound(playerChoice, computerChoice) {
+function getPlayerChoice() {
+    let playerChoice = prompt("Input: ");
+    playerChoice = playerChoice.toUpperCase();
 
+    if (playerChoice !== "ROCK" && 
+        playerChoice !== "PAPER" &&
+        playerChoice !== "SCISSORS") {
+
+        console.log('Wrong Input! Only "ROCK","PAPER" or "SCISSORS" allowed.');
+        return getPlayerChoice();
+    }
+
+    return playerChoice;
+}
+
+function playRound(playerChoice, computerChoice) {
     playerChoice = playerChoice.toUpperCase();
     computerChoice = computerChoice.toUpperCase();
 
     if (playerChoice === "ROCK" && computerChoice === "ROCK") {
-        return "Draw";
+        return "DRAW";
     }
 
     if (playerChoice === "ROCK" && computerChoice === "PAPER") {
-        return "Lose";
+        return "LOSE";
     }
 
     if (playerChoice === "ROCK" && computerChoice === "SCISSORS") {
-        return "Win";
+        return "WIN";
     }
 
 
 
     if (playerChoice === "PAPER" && computerChoice === "ROCK") {
-        return "Win";
+        return "WIN";
     }
 
     if (playerChoice === "PAPER" && computerChoice === "PAPER") {
-        return "Draw";
+        return "DRAW";
     }
 
     if (playerChoice === "PAPER" && computerChoice === "SCISSORS") {
-        return "Lose";
+        return "LOSE";
     }
 
 
 
     if (playerChoice === "SCISSORS" && computerChoice === "ROCK") {
-        return "Lose";
+        return "LOSE";
     }
 
     if (playerChoice === "SCISSORS" && computerChoice === "PAPER") {
-        return "Win";
+        return "WIN";
     }
 
     if (playerChoice === "SCISSORS" && computerChoice === "SCISSORS") {
-        return "Draw";
+        return "DRAW";
     }
 }
 
-const playerChoice = "Rock";
-const computerChoice = getComputerChoice();
+function game() {
+    let winCount = 0;
+    let drawCount = 0;
+    let loseCount = 0;
 
-console.log(playRound(playerChoice, computerChoice));
+    for (let i = 0; i < 5; i++) {
+        let playerChoice = getPlayerChoice();
+        let computerChoice = getComputerChoice();
+
+        let result = playRound(playerChoice, computerChoice);
+        
+        switch (result) {
+            case "WIN":
+                winCount += 1;
+                break;
+            case "DRAW":
+                drawCount += 1;
+                break;
+            case "LOSE":
+                loseCount+= 1;
+                break;
+            default:
+                break;
+        }
+
+        console.log(`Round ${i + 1} | ${result} | Player: ${playerChoice} - Computer: ${computerChoice}`);
+    }
+
+    if (winCount > loseCount) {
+        return "The player won the game!";
+    }
+
+    if (loseCount > winCount) {
+        return "The computer won the game!";
+    }
+
+    return "The game ended in a draw!";
+}
