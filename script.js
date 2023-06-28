@@ -1,120 +1,81 @@
 
 function getComputerChoice() {
-    const MIN = 1;
-    const MAX = 3;
+    const MIN = 0;
+    const MAX = 2;
 
-    const randomNumber = MIN + (Math.floor(Math.random() * 10) % MAX);
+    const choices = ["ROCK", "PAPER", "SCISSORS"];
+    return choices[MIN + Math.floor(Math.random() * 10) % (MAX + 1)];
 
-    switch(randomNumber) {
-        case 1:
-            return "ROCK";
-            break;
-        case 2:
-            return "PAPER";
-            break;
-        case 3:
-            return "SCISSORS";
-            break;
-        default:
-            break;
+}
+
+function updateView() {
+    divPlayerScore.innerText = winCount;
+    divComputerScore.innerText = loseCount;
+
+    if (winCount >= 5) {
+        divInfo.innerText = "YOU WON!";
+        disableButtons();
+    }
+
+    if (loseCount >= 5) {
+        divInfo.innerText = "YOU LOST!";
+        disableButtons();
     }
 }
 
-function getPlayerChoice() {
-    let playerChoice = prompt("Input: ");
-    playerChoice = playerChoice.toUpperCase();
-
-    if (playerChoice !== "ROCK" && 
-        playerChoice !== "PAPER" &&
-        playerChoice !== "SCISSORS") {
-
-        console.log('Wrong Input! Only "ROCK","PAPER" or "SCISSORS" allowed.');
-        return getPlayerChoice();
-    }
-
-    return playerChoice;
+function disableButtons() {
+    btnRock.disabled = true;
+    btnPaper.disabled = true;
+    btnScissors.disabled = true;
 }
 
-function playRound(playerChoice, computerChoice) {
-    playerChoice = playerChoice.toUpperCase();
-    computerChoice = computerChoice.toUpperCase();
-
-    if (playerChoice === "ROCK" && computerChoice === "ROCK") {
-        return "DRAW";
-    }
-
-    if (playerChoice === "ROCK" && computerChoice === "PAPER") {
-        return "LOSE";
-    }
-
-    if (playerChoice === "ROCK" && computerChoice === "SCISSORS") {
-        return "WIN";
-    }
-
-
-
-    if (playerChoice === "PAPER" && computerChoice === "ROCK") {
-        return "WIN";
-    }
-
-    if (playerChoice === "PAPER" && computerChoice === "PAPER") {
-        return "DRAW";
-    }
-
-    if (playerChoice === "PAPER" && computerChoice === "SCISSORS") {
-        return "LOSE";
-    }
-
-
-
-    if (playerChoice === "SCISSORS" && computerChoice === "ROCK") {
-        return "LOSE";
-    }
-
-    if (playerChoice === "SCISSORS" && computerChoice === "PAPER") {
-        return "WIN";
-    }
-
-    if (playerChoice === "SCISSORS" && computerChoice === "SCISSORS") {
-        return "DRAW";
-    }
+function enableButtons() {
+    btnRock.disabled = false;
+    btnPaper.disabled = false;
+    btnScissors.disabled = false;
 }
 
-function game() {
-    let winCount = 0;
-    let drawCount = 0;
-    let loseCount = 0;
+function resetView() {
+    winCount = 0;
+    loseCount = 0;
 
-    for (let i = 0; i < 5; i++) {
-        let playerChoice = getPlayerChoice();
-        let computerChoice = getComputerChoice();
+    divInfo.innerText = "";
 
-        let result = playRound(playerChoice, computerChoice);
-        
-        switch (result) {
-            case "WIN":
-                winCount += 1;
-                break;
-            case "DRAW":
-                drawCount += 1;
-                break;
-            case "LOSE":
-                loseCount+= 1;
-                break;
-            default:
-                break;
-        }
-
-        console.log(`Round ${i + 1} | ${result} | Player: ${playerChoice} - Computer: ${computerChoice}`);
-    }
-
-    if (winCount > loseCount) {
-        return "The player won the game!";
-    }
-
-    if (loseCount > winCount) {
-        return "The computer won the game!";
-    }
-
-    return "The game ended in a draw!";
+    enableButtons();
+    updateView();
 }
+
+function playRound(event) {
+    const playerChoice = event.target.id.toUpperCase();
+    const computerChoice = getComputerChoice().toUpperCase();
+
+    if (playerChoice === "ROCK" && computerChoice === "SCISSORS" ||
+        playerChoice === "PAPER" && computerChoice === "ROCK" ||
+        playerChoice === "SCISSORS" && computerChoice === "PAPER") {
+
+        winCount++;
+    } else {
+        loseCount++;
+    }
+
+    updateView();
+}
+
+let winCount = 0;
+let loseCount = 0;
+
+const divPlayerScore = document.querySelector(".player-score");
+const divComputerScore = document.querySelector(".computer-score");
+const divInfo = document.querySelector(".info");
+
+const btnReset = document.querySelector(".reset");
+btnReset.addEventListener("click", resetView);
+
+const btnRock = document.querySelector("#rock");
+const btnPaper = document.querySelector("#paper");
+const btnScissors = document.querySelector("#scissors");
+
+btnRock.addEventListener("click", playRound);
+btnPaper.addEventListener("click", playRound);
+btnScissors.addEventListener("click", playRound);
+
