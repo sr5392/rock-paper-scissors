@@ -1,11 +1,12 @@
 
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function getComputerChoice() {
-    const MIN = 0;
-    const MAX = 2;
-
+    const randomChoice = getRandomNumber(0, 2);
     const choices = ["ROCK", "PAPER", "SCISSORS"];
-    return choices[MIN + Math.floor(Math.random() * 10) % (MAX + 1)];
-
+    return choices[randomChoice];
 }
 
 function updateView() {
@@ -35,29 +36,39 @@ function enableButtons() {
     btnScissors.disabled = false;
 }
 
-function resetView() {
+function resetScores() {
     winCount = 0;
     loseCount = 0;
+}
 
+function resetView() {
     divInfo.innerText = "";
 
+    resetScores();
     enableButtons();
     updateView();
 }
 
-function playRound(event) {
-    const playerChoice = event.target.id.toUpperCase();
-    const computerChoice = getComputerChoice().toUpperCase();
+function updateScores(playerChoice, computerChoice) {
+
+    if (playerChoice === computerChoice) return;
 
     if (playerChoice === "ROCK" && computerChoice === "SCISSORS" ||
         playerChoice === "PAPER" && computerChoice === "ROCK" ||
         playerChoice === "SCISSORS" && computerChoice === "PAPER") {
 
         winCount++;
-    } else {
-        loseCount++;
-    }
+        return;
+    } 
 
+    loseCount++;
+}
+
+function playRound(event) {
+    const playerChoice = event.target.id.toUpperCase();
+    const computerChoice = getComputerChoice().toUpperCase();
+
+    updateScores(playerChoice, computerChoice);
     updateView();
 }
 
@@ -68,7 +79,7 @@ const divPlayerScore = document.querySelector(".player-score");
 const divComputerScore = document.querySelector(".computer-score");
 const divInfo = document.querySelector(".info");
 
-const btnReset = document.querySelector(".reset");
+const btnReset = document.querySelector("#restart");
 btnReset.addEventListener("click", resetView);
 
 const btnRock = document.querySelector("#rock");
