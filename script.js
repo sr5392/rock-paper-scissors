@@ -50,7 +50,6 @@ function resetView() {
 }
 
 function updateScores(playerChoice, computerChoice) {
-
     if (playerChoice === computerChoice) return;
 
     if (playerChoice === "ROCK" && computerChoice === "SCISSORS" ||
@@ -65,7 +64,7 @@ function updateScores(playerChoice, computerChoice) {
 }
 
 function playRound(event) {
-    const playerChoice = event.target.id.toUpperCase();
+    const playerChoice = event.target.parentNode.id.toUpperCase();
     const computerChoice = getComputerChoice().toUpperCase();
 
     updateScores(playerChoice, computerChoice);

@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button img {
+    height: 200px;
+    width: 200px;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
