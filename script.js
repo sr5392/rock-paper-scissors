@@ -10,17 +10,22 @@ function getComputerChoice() {
 }
 
 function updateView() {
-    divPlayerScore.innerText = winCount;
-    divComputerScore.innerText = loseCount;
+    pPlayerChoice.innerText = playerChoice;
+    pComputerChoice.innerText = computerChoice;
+
+    pPlayerScore.innerText = winCount;
+    pComputerScore.innerText = loseCount;
 
     if (winCount >= 5) {
         divInfo.innerText = "YOU WON!";
         disableButtons();
+        return;
     }
 
     if (loseCount >= 5) {
         divInfo.innerText = "YOU LOST!";
         disableButtons();
+        return;
     }
 }
 
@@ -49,7 +54,7 @@ function resetView() {
     updateView();
 }
 
-function updateScores(playerChoice, computerChoice) {
+function updateScores() {
     if (playerChoice === computerChoice) return;
 
     if (playerChoice === "ROCK" && computerChoice === "SCISSORS" ||
@@ -63,20 +68,27 @@ function updateScores(playerChoice, computerChoice) {
     loseCount++;
 }
 
-function playRound(event) {
-    const playerChoice = event.target.parentNode.id.toUpperCase();
-    const computerChoice = getComputerChoice().toUpperCase();
+function playRound() {
+    playerChoice = this.id.toUpperCase();
+    computerChoice = getComputerChoice().toUpperCase();
 
-    updateScores(playerChoice, computerChoice);
+    updateScores();
     updateView();
 }
+
+let playerChoice = "";
+let computerChoice = "";
 
 let winCount = 0;
 let loseCount = 0;
 
-const divPlayerScore = document.querySelector(".player-score");
-const divComputerScore = document.querySelector(".computer-score");
-const divInfo = document.querySelector(".info");
+const pPlayerChoice = document.querySelector(".player-choice");
+const pComputerChoice = document.querySelector(".computer-choice");
+
+const pPlayerScore = document.querySelector(".player-score");
+const pComputerScore = document.querySelector(".computer-score");
+
+const divInfo = document.querySelector(".round-result");
 
 const btnReset = document.querySelector("#restart");
 btnReset.addEventListener("click", resetView);
