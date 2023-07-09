@@ -28,13 +28,17 @@ body {
 
 .score-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
+    gap: 20px;
     padding: 20px;
 }
 
 .player-score-container,
+.score-separator,
 .computer-score-container {
+    height: 180px;
+    width: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,6 +46,7 @@ body {
 }
 
 .player-score,
+.score-separator,
 .computer-score {
     font-size: 100px;
 }

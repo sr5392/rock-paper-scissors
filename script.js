@@ -10,23 +10,17 @@ function getComputerChoice() {
 }
 
 function updateView() {
+    if(result !== "") {
+        disableButtons();
+    }
+
     pPlayerChoice.innerText = playerChoice;
     pComputerChoice.innerText = computerChoice;
 
     pPlayerScore.innerText = winCount;
     pComputerScore.innerText = loseCount;
 
-    if (winCount >= 5) {
-        divInfo.innerText = "YOU WON!";
-        disableButtons();
-        return;
-    }
-
-    if (loseCount >= 5) {
-        divInfo.innerText = "YOU LOST!";
-        disableButtons();
-        return;
-    }
+    divResult.innerText = result;
 }
 
 function disableButtons() {
@@ -44,12 +38,17 @@ function enableButtons() {
 function resetScores() {
     winCount = 0;
     loseCount = 0;
+    result = "";
+}
+
+function resetChoices() {
+    playerChoice = "";
+    computerChoice = ""; 
 }
 
 function resetView() {
-    divInfo.innerText = "";
-
     resetScores();
+    resetChoices();
     enableButtons();
     updateView();
 }
@@ -62,13 +61,20 @@ function updateScores() {
         playerChoice === "SCISSORS" && computerChoice === "PAPER") {
 
         winCount++;
+        if(winCount >= 5) {
+            result = "YOU WON!";
+        }
+
         return;
     } 
 
     loseCount++;
+    if (loseCount >= 5) {
+        result = "YOU LOST!";
+    }
 }
 
-function playRound() {
+function playRound() {   
     playerChoice = this.id.toUpperCase();
     computerChoice = getComputerChoice().toUpperCase();
 
@@ -82,13 +88,15 @@ let computerChoice = "";
 let winCount = 0;
 let loseCount = 0;
 
+let result = "";
+
 const pPlayerChoice = document.querySelector(".player-choice");
 const pComputerChoice = document.querySelector(".computer-choice");
 
 const pPlayerScore = document.querySelector(".player-score");
 const pComputerScore = document.querySelector(".computer-score");
 
-const divInfo = document.querySelector(".round-result");
+const divResult = document.querySelector(".round-result");
 
 const btnReset = document.querySelector("#restart");
 btnReset.addEventListener("click", resetView);
@@ -96,7 +104,6 @@ btnReset.addEventListener("click", resetView);
 const btnRock = document.querySelector("#rock");
 const btnPaper = document.querySelector("#paper");
 const btnScissors = document.querySelector("#scissors");
-
 btnRock.addEventListener("click", playRound);
 btnPaper.addEventListener("click", playRound);
 btnScissors.addEventListener("click", playRound);
